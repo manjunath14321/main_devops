@@ -2,4 +2,5 @@ ihi hi hello
 
 hi abc
 
-manu xyz 
+manu xyz
+last line changed by dev1 in machine1 
