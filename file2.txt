@@ -3,4 +3,8 @@ ihi hi hello
 hi abc
 
 manu xyz
+<<<<<<< HEAD
 last line was chnaged by dev2 and machine2 
+=======
+
+>>>>>>> e6d7acfc2e0f8c7897d3dc57fb7a37485fc45c24
