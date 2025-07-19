@@ -1,0 +1,9 @@
+resource_group_name        = "manjumt-resources"
+location                   = "East US"
+aks_name                   = "manjumt-aks1"
+dns_prefix                 = "manjumtaks1"
+node_count                 = 1
+vm_size                    = "Standard_D2_v2"
+acr_name                   = "manjunathcontainerRegistry1"
+acr_sku                    = "Premium"
+acr_replication_locations  = ["East US","North Europe"]

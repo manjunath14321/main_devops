@@ -1,0 +1,44 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  tf_version: '1.6.0'
+  azureServiceConnection: 'AzureSPN'  # Define in Azure DevOps project → Service Connections
+  backend_rg: 'tfstate-rg'
+  backend_storage: 'tfstatebackend123'
+  backend_container: 'tfstate'
+  backend_key: 'aks/terraform.tfstate'
+
+stages:
+  - stage: Terraform
+    jobs:
+      - job: Deploy
+        displayName: Terraform Apply
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:
+          - task: UseTerraform@1
+            inputs:
+              terraformVersion: $(tf_version)
+
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                echo "##[section]Terraform Init"
+                terraform init \
+                  -backend-config="resource_group_name=$(backend_rg)" \
+                  -backend-config="storage_account_name=$(backend_storage)" \
+                  -backend-config="container_name=$(backend_container)" \
+                  -backend-config="key=$(backend_key)"
+
+                echo "##[section]Terraform Plan"
+                terraform plan -out=tfplan
+
+                echo "##[section]Terraform Apply"
+                terraform apply -auto-approve tfplan
